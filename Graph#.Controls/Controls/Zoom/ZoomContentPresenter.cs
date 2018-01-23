@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace GraphSharp.Controls.Zoom
 {
@@ -20,8 +19,7 @@ namespace GraphSharp.Controls.Zoom
                     return;
 
                 _contentSize = value;
-                if (ContentSizeChanged != null)
-                    ContentSizeChanged(this, _contentSize);
+                ContentSizeChanged?.Invoke(this, _contentSize);
             }
         }
 

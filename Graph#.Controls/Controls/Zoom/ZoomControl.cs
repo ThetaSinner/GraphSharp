@@ -41,7 +41,7 @@ namespace GraphSharp.Controls.Zoom
                 case ZoomControlModes.Custom:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("e", "zoom control mode");
             }
         }
 
@@ -356,7 +356,9 @@ namespace GraphSharp.Controls.Zoom
         private Vector GetInitialTranslate()
         {
             if (_presenter == null)
+            {
                 return new Vector(0.0, 0.0);
+            }
 
             var tX = -(_presenter.ContentSize.Width - _presenter.DesiredSize.Width) / 2.0;
             var tY = -(_presenter.ContentSize.Height - _presenter.DesiredSize.Height) / 2.0;
@@ -371,9 +373,11 @@ namespace GraphSharp.Controls.Zoom
         private void DoZoomToFill()
         {
             if (_presenter == null || Mode != ZoomControlModes.Fill)
+            {
                 return;
+            }
 
-            var deltaZoom = Math.Min(ActualWidth/_presenter.ContentSize.Width, ActualHeight/_presenter.ContentSize.Height);
+            var deltaZoom = Math.Min(ActualWidth / _presenter.ContentSize.Width, ActualHeight / _presenter.ContentSize.Height);
             var initialTranslate = GetInitialTranslate();
             DoZoomAnimation(deltaZoom, initialTranslate.X * deltaZoom, initialTranslate.Y * deltaZoom);
         }
@@ -388,7 +392,13 @@ namespace GraphSharp.Controls.Zoom
                 Presenter.SizeChanged += (s, a) => DoZoomToFill();
                 Presenter.ContentSizeChanged += (s, a) => DoZoomToFill();
             }
+
             ZoomToFill();
+        }
+
+        public void ZoomToPosition(Point position)
+        {           
+            DoZoomAnimation(Zoom, position.X, position.Y);
         }
     }
 }
